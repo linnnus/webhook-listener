@@ -1,0 +1,20 @@
+{
+	"secret_file": "./examples/secret.txt",
+
+	"commands": [
+		{
+			"event": "ping",
+			"command": "/bin/echo",
+			"args": [
+				"Got ping event!!"
+			]
+		},
+		{
+			"event": "push",
+			"command": "/bin/echo",
+			"args": [
+				"Got push event!!"
+			]
+		}
+	]
+}
