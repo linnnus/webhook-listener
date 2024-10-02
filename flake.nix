@@ -132,7 +132,7 @@
                 });
               };
 
-              secret-file = mkOption {
+              secret-path = mkOption {
                 description = "Path to file containing the secret given to GitHub.";
                 type = types.path;
                 example = "/run/github_secret.txt";
@@ -192,7 +192,7 @@
               serviceConfig =
                 let
                   config = {
-                    "secret_file" = cfg.secret-file;
+                    "secret_path" = cfg.secret-path;
                     "commands" = cfg.commands;
                   };
 
@@ -250,7 +250,7 @@
                     ];
 
                     # The secret to be used when authenticating event's signature.
-                    secret-file = toString (pkgs.writeText "secret.txt" "mysecret");
+                    secret-path = toString (pkgs.writeText "secret.txt" "mysecret");
                   };
 
                   environment.systemPackages = [

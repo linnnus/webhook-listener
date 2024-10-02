@@ -1,5 +1,7 @@
 {
-	"secret_file": "./examples/secret.txt",
+	"secret_path": "./examples/secret.txt",
+
+	"max_idle_time": "1h",
 
 	"commands": [
 		{
