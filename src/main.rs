@@ -68,6 +68,7 @@ fn get_listener_from_systemd() -> io::Result<TokioUnixListener> {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let config = load_config();
+    println!("Using config: {:?}", config);
 
     let listener = get_listener_from_systemd()?;
 

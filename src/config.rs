@@ -34,6 +34,11 @@ impl Config {
         let file = File::open(path.as_ref()).map_err(ConfigError::IoReadingConfig)?;
         let mut config: Config = serde_json::from_reader(file)?;
 
+        if config.secret_path.is_relative() {
+            eprintln!("warning: `secret_path` in configuration is a relative path.\
+                       This will be resolved relative to the server's CWD at runtime,\
+                       which is most likely not what you want!");
+        }
         config.secret = fs::read_to_string(&config.secret_path)
             .map_err(ConfigError::IoReadingSecret)?;
 
