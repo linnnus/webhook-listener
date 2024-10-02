@@ -45,7 +45,7 @@ fn get_listener_from_systemd() -> io::Result<TokioUnixListener> {
     }
     let fd = fds.remove(0);
 
-
+    // See note inside `systemd_socket::is_socket_internal` for why this is broken on Darwin.
     #[cfg(not(target_vendor = "apple"))] // See note in `is_socket_unix`.
     {
         use nix::sys::socket::SockType;

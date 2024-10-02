@@ -331,7 +331,7 @@ mod tests {
     use ::lazy_static::lazy_static;
     use ::std::env;
     use ::std::os::unix::io::OwnedFd;
-    use ::std::os::fd::{AsRawFd, FromRawFd, RawFd};
+    use ::std::os::fd::{AsRawFd, FromRawFd};
     use ::std::sync::{Mutex,MutexGuard};
     use ::std::mem;
 

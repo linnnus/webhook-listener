@@ -103,8 +103,7 @@ mod tests {
         ( $e:expr , $pat:pat => $c:expr ) => {
             match $e {
                 $pat => $c,
-                ref e => panic!("assertion failed: `{:?}` does not match `{}`",
-                    e, stringify!($pat))
+                ref e => panic!("assertion failed: `{:?}` does not match `{}`", e, stringify!($pat))
             }
         };
     }

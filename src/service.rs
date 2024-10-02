@@ -132,8 +132,6 @@ fn decode_hex(s: &str) -> Result<Vec<u8>, ParseIntError> {
 }
 
 /// Validates the signature that GitHub attaches to events.
-///
-///
 fn validate_request(secret: &String, headers: &HeaderMap<HeaderValue>, body: &Bytes) -> bool {
     // To verify the authenticity of the event, GitHub attaches a signature of the payload to
     // every request. We extract the header. The header value will look something like this:
