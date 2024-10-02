@@ -40,6 +40,7 @@ impl Config {
                        which is most likely not what you want!");
         }
         config.secret = fs::read_to_string(&config.secret_path)
+            .map(|mut s| { s.truncate(s.trim_end().len()); s })
             .map_err(ConfigError::IoReadingSecret)?;
 
         Ok(config)
