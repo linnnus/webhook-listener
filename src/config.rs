@@ -220,4 +220,25 @@ mod tests {
         };
         assert_eq!(parsed_config, expected_config);
     }
+
+    #[test]
+    fn max_idle_time_null_deserializes_to_none() {
+        let config_json = r#"
+            {
+                "secret_path": "/path/to/secret.txt",
+
+                "max_idle_time": null,
+
+                "commands": [ ]
+            }
+        "#;
+        let parsed_config = serde_json::from_str::<Config>(config_json).expect("valid config");
+        let expected_config = Config {
+            secret_path: Path::new("/path/to/secret.txt").to_path_buf(),
+            secret: "".to_string(), // We didn't ask it to read file
+            max_idle_time: None,
+            commands: vec![],
+        };
+        assert_eq!(parsed_config, expected_config);
+    }
 }

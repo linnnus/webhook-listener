@@ -1,3 +1,8 @@
+let
+  # Normally the max-idle time would probably be a little longer than this, but
+  # I don't want to drag out this test for 10 minutes.
+  max-idle-secs = 20;
+in
 {
   name = "socket-usage";
 
@@ -15,6 +20,8 @@
           args = ["/tmp/received-push-event"];
         }
       ];
+
+      max-idle-time = "${toString max-idle-secs}s";
 
       # The secret to be used when authenticating event's signature.
       secret-path = toString (pkgs.writeText "secret.txt" "mysecret");
@@ -69,6 +76,8 @@
   };
 
   testScript = ''
+    import time
+
     machine.start()
 
     with subtest("Proper (lazy) socket activation"):
@@ -86,6 +95,13 @@
     with subtest("Service should be activated after request"):
       exit_code, _ = machine.systemctl("is-active webhook-listener.service --quiet")
       assert exit_code == 0, "Event should be active"
+
+    with subtest("Service should exit after idle time"):
+      # Give it a little buffer to avoid false negatives.
+      time.sleep(${toString max-idle-secs} + 5)
+
+      exit_code, _ = machine.systemctl("is-active webhook-listener.service --quiet")
+      assert exit_code == 3, "Event should be inactive"
 
     # TODO: Send an invalid request (subtest).
   '';

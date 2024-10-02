@@ -86,6 +86,21 @@ in {
         type = types.path;
         readOnly = true;
       };
+
+      max-idle-time = mkOption {
+        description = ''
+          Maximum time the server should wait for a new connection before exiting.
+
+          In conjunction with socket-activation, this ensures the server isn't
+          using any ressources in the (typically) long periods of time between
+          requests.
+
+          The server will never exit, if this option is set to `null`.
+        '';
+        type = with types; nullOr str;
+        default = null;
+        example = "20min";
+      };
     };
   };
 
@@ -131,6 +146,7 @@ in {
           config = {
             "secret_path" = cfg.secret-path;
             "commands" = cfg.commands;
+            "max_idle_time" = cfg.max-idle-time;
           };
 
           config-file = pkgs.writers.writeJSON "config.json" config;
