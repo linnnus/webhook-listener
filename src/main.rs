@@ -73,7 +73,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 
     // We start a loop to continuously accept incoming connections
     loop {
-        let (stream, _) = listener.accept().await.expect("accepting new connection");
+        let (stream, _) = if let Some(max_idle_time) = config.max_idle_time {
+            let accept_future = listener.accept();
+            let timeout_future = tokio::time::timeout(max_idle_time, accept_future);
+            match timeout_future.await {
+                Ok(accept_result) => accept_result,
+                Err(_) => {
+                    eprintln!("Timed out waiting for new connection. Exiting.");
+                    process::exit(0);
+                },
+            }
+        } else {
+            listener.accept().await
+        }.expect("accepting connection");
+
         let io = TokioIo::new(stream);
         let cfg = config.clone();
 
