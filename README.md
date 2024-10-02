@@ -8,7 +8,7 @@ To test the server in development, run:
 
 ```sh
 $ rm -f /tmp/webhook-listener.sock
-$ nix develop --command systemfd --socket unix::/tmp/webhook-listener.sock -- target/debug/webhook-listener
+$ nix develop --command systemfd --socket unix::/tmp/webhook-listener.sock -- target/debug/webhook-listener ./examples/config.json
 ```
 
 Then, in another terminal, run this command to send a sample event:
